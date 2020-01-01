@@ -1,10 +1,6 @@
-from collections import Counter
 import csv
-from datetime import date
-import datetime
 import glob
 import matplotlib.pyplot as plt
-import numpy as np
 import os
 import pandas as pd
 
