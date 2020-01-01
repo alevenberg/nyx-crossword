@@ -1,6 +1,6 @@
 # Crossword
 
-This is a python script that scrapes [this site](https://nyxcrossword.com/) for crossword answers in a given date range.
+This is a python script that scrapes [this site](https://nyxcrossword.com/) for NYT crossword answers in a given date range.
 
 ## Setup
 
