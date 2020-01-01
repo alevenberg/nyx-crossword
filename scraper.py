@@ -18,6 +18,7 @@ def store_clue(clue_dict, item, logger):
     """Stores an item into a dictionary"""
     key = item[0]
     answer = item[1]
+    answer = ''.join(c for c in answer if c.isalpha()) # Remove non alpha characters
     logger.debug("Storing clue '{}' with answer '{}'".format(key, answer))
     clue_dict[key] = answer
 
@@ -41,14 +42,25 @@ def get_clues(url, logger):
     clue_list = []
     if (clue_list_p is None):
         # For older entries without a cluelist
-        across = soup.find('b', text="Across")
-        down = soup.find('b', text="Across")
+        across = soup.find_all('b', text="Across")[-1]
+        down = soup.find_all('b', text="Down")[-1]
+
         if (across is None or down is None):
             logger.error("Unable to parse page - no clue list found '{}'".format(url))
             return {}
 
         across_clues = across.find_parent('i')
         down_clues = down.find_parent('i')
+
+        if (across_clues is None):
+            across_clues = across.find_parent('p')
+
+        if (down_clues is None):
+            down_clues = down.find_parent('p')
+
+        if (across_clues is None or down_clues is None):
+            logger.error("Unable to parse page - unexpected format '{}'".format(url))
+            return {}
 
         for linebreak in across_clues.find_all('br'):
             linebreak.extract()
@@ -62,7 +74,7 @@ def get_clues(url, logger):
             text = item.get_text()
             clue_list.extend(text.split("\n"))
 
-    clue_list = list(filter(lambda x: x != "",clue_list)) # Remove empty string entry
+    clue_list = list(filter(lambda x: x != "" and x != "Across" and x != "Down",clue_list)) # Remove empty string entry
 
     clues = {}
     for item in clue_list:
