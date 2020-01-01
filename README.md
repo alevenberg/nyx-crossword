@@ -4,7 +4,8 @@ This is a python script that scrapes [this site](https://nyxcrossword.com/) for 
 
 ## Setup
 
-1. Setup your virtual environment: `python3 -m venv env`
+1. Setup your virtual environment
+    - For mac OS: `python3 -m venv env`
 
 2. Activate your virtual environment: `source ./env/bin/activate`
 
