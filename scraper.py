@@ -9,6 +9,7 @@ import argparse
 import datetime
 import pandas as pd
 import urllib.parse
+import sys 
 
 def generate_dates(start_date, end_date):
     """Return a list of dates"""
@@ -49,22 +50,23 @@ def get_clues(url):
                 item = item.split("…")
                 store_clue(clues, item)
         else: 
-            print(item)
+            print("Can't parse item: ", item)
     
     return clues
-             # print(item)
-        # item = re.split(' : ', item) 
-        # if (len(item) == 2):
-            # store_clue(clues, item)
-        # else:
-        #     print(item)
-            # item = item[0].lstrip('..') # Remove .. from front
-            # item = re.split('...', item) # Split clue and answer if separated with colon
-            # if (len(item) == 2):
-            #     store_clue(clues, item)
-            # print(url)
-            # print(item)
 
+def write_to_csv(crossword_dict, file_name):
+    # Make directory in file it is run in
+    directory = "./data/"
+    my_path = os.path.abspath(os.path.dirname(__file__))
+    print(my_path)
+
+
+# csv_file = date
+# csvfile = open(csv_file + '.csv', 'wb')
+# writer = csv.writer(csvfile)
+# path = os.path.join(my_path, "./data/test.csv")
+# with open(path) as f:
+#     test = list(csv.reader(f))
 def main():
     # Command line argument parsing
     parser = argparse.ArgumentParser(description='A script that scrapes https://nyxcrossword.com/ for the crossword clues and answers in the specified date range')
@@ -78,14 +80,19 @@ def main():
         type=datetime.date.fromisoformat)
     args = parser.parse_args()
 
+    start_date = args.start_date.strftime("%Y-%m-%d")
+    end_date = args.end_date.strftime("%Y-%m-%d")
+
+    if (end_date < start_date):
+        print("End date must be after or the same as the start date")
+        sys.exit(0)
+
     # Generate dates
     date_range = generate_dates(args.start_date, args.end_date)
 
     base_url = "https://nyxcrossword.com"
-    urls = []
     crossword = {}
     crosswords = {}
-    print(date_range)
     for single_date in date_range:
         # print(single_date.strftime("%Y-%m-%d"))
         year = single_date.strftime("%Y")
@@ -95,25 +102,21 @@ def main():
         
         url = urllib.parse.urljoin(base_url, ("/".join(url_date_items)))
 
-        clues_dict = get_clues(url)
-        crosswords[single_date.strftime("%Y-%m-%d")] = clues_dict
-
-    print(crosswords)
+        # clues_dict = get_clues(url)
+        # crosswords[single_date.strftime("%Y-%m-%d")] = clues_dict
+    if (args.start_date != args.end_date):
+        file_name = "crossword-clues-from-" + str(args.start_date) + "-to-" + str(args.end_date) + ".csv"
+    else: 
+        file_name = "crossword-clues-on-" + str(args.start_date) + ".csv"
+    print(file_name)
+    # Write to csv
+    write_to_csv(crosswords, file_name)
+    # print(crosswords)
     #     urls.append(url)
     # print(urls)
 
 main()
-# Make directory in file it is run in
-# directory = "./data/"
-# my_path = os.path.abspath(os.path.dirname(__file__))
-# print(my_path)
 
-# csv_file = date
-# csvfile = open(csv_file + '.csv', 'wb')
-# writer = csv.writer(csvfile)
-# path = os.path.join(my_path, "./data/test.csv")
-# with open(path) as f:
-#     test = list(csv.reader(f))
 
 # try:
 #     if not os.path.exists(directory):
