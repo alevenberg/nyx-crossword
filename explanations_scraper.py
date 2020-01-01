@@ -185,9 +185,9 @@ def main():
     base_url = "https://nyxcrossword.com"
 
     if (args.start_date != args.end_date):
-        file_name = "crossword-clues-from-" + str(args.start_date) + "-to-" + str(args.end_date) + ".csv"
+        file_name = "explanations-from-" + str(args.start_date) + "-to-" + str(args.end_date) + ".csv"
     else: 
-        file_name = "crossword-clues-from-" + str(args.start_date) + ".csv"
+        file_name = "explanations-from-" + str(args.start_date) + ".csv"
 
     for single_date in date_range:
         year = single_date.strftime("%Y")
