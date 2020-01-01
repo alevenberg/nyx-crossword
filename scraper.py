@@ -1,16 +1,14 @@
-from bs4 import BeautifulSoup
-import requests
-import re
-import csv
-import os
-import csv 
 import argparse
+from bs4 import BeautifulSoup
+import csv
 from datetime import date
 import datetime
-import pandas as pd
-import urllib.parse
-import sys 
 import logging
+import os
+import pandas as pd
+import requests
+import sys 
+import urllib.parse
 
 def generate_dates(start_date, end_date):
     """Return a list of dates"""
@@ -25,10 +23,16 @@ def store_clue(clue_dict, item):
 def get_clues(url, logger):
     """Return a dictionary containing the clues and answers of the crossword from the given page"""
     logger.info("Scraping clues from '{}'".format(url))
+    page = None
     try: 
         page = requests.get(url)
     except requests.exceptions.ConnectionError: 
         logger.error("Unable to connect to url '{}'".format(url))
+        return {}
+
+    if (page is None):
+        logger.error("Unable to connect to url '{}'".format(url))
+        return {}
 
     soup = BeautifulSoup(page.text, "lxml")
     clue_list_p = soup.find("div", {"id":"clue_list"})
@@ -66,8 +70,8 @@ def get_clues(url, logger):
     
     return clues
 
-def write_to_csv(crossword_dict, file_name, logger):
-    """Writes to a csv file in directory called data"""
+def write_to_csv(crossword_dict, date, file_name, logger):
+    """Writes to a csv file for a given date"""
     logger.info("Writing to csv file '{}'".format(file_name))
 
     # Make directory in file it is run in
@@ -82,9 +86,8 @@ def write_to_csv(crossword_dict, file_name, logger):
     with open(csv_path, 'w') as csvfile:
         writer = csv.writer(csvfile, delimiter=',',
                             escapechar=' ', quoting=csv.QUOTE_MINIMAL)
-        for key, value in crossword_dict.items():
-            for clue, answer in value.items():
-                writer.writerow([key, clue, answer])
+        for clue, answer in crossword_dict.items():
+            writer.writerow([date, clue, answer])
 
 def main():
     # Command line argument parsing
@@ -127,8 +130,12 @@ def main():
     date_range = generate_dates(args.start_date, args.end_date)
 
     base_url = "https://nyxcrossword.com"
-    crossword = {}
-    crosswords = {}
+
+    if (args.start_date != args.end_date):
+        file_name = "crossword-clues-from-" + str(args.start_date) + "-to-" + str(args.end_date) + ".csv"
+    else: 
+        file_name = "crossword-clues-from-" + str(args.start_date) + ".csv"
+
     for single_date in date_range:
         # print(single_date.strftime("%Y-%m-%d"))
         year = single_date.strftime("%Y")
@@ -139,14 +146,8 @@ def main():
         url = urllib.parse.urljoin(base_url, ("/".join(url_date_items)))
 
         clues_dict = get_clues(url, logger)
-        crosswords[single_date.strftime("%Y-%m-%d")] = clues_dict
-    
-    if (args.start_date != args.end_date):
-        file_name = "crossword-clues-from-" + str(args.start_date) + "-to-" + str(args.end_date) + ".csv"
-    else: 
-        file_name = "crossword-clues-from-" + str(args.start_date) + ".csv"
-
-    # Write to csv
-    write_to_csv(crosswords, file_name, logger)
+        
+        # Write to csv
+        write_to_csv(clues_dict, single_date.strftime("%Y-%m-%d"), file_name, logger)
 
 main()
