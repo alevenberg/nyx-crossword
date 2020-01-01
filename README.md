@@ -17,7 +17,7 @@ This is a python script that scrapes [NYXCrosswords.com](https://nyxcrossword.co
 ## Setup
 
 1. Setup your virtual environment
-    - For mac OS: `python3 -m venv env`
+    - For mac OS: `python3.7 -m venv env`
 
 2. Activate your virtual environment: `source ./env/bin/activate`
 
