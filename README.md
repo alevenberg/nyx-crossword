@@ -32,4 +32,3 @@ This is a python script that scrapes [NYXCrosswords.com](https://nyxcrossword.co
     - You can also delete the log files and data directory by running a cleaning script
         - Give execute permissions: `chmod 755 clean.sh`
         - Run script: `./clean.sh`
-
