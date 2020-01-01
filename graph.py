@@ -1,17 +1,38 @@
+import argparse
+from collections import Counter
+from datetime import date
+import datetime
 import matplotlib.pyplot as plt
-import pandas as pd
+import numpy as np
 import os
-csv_file = "crossword-clues-frequency-from-2019-01-01-to-2019-12-31.csv"
-directory = "data"
+import pandas as pd
 
-my_path = os.path.abspath(os.path.dirname(__file__))
-data_path = os.path.join(my_path, directory)
-csv_path = os.path.join(data_path, csv_file)
-print(csv_path)
+def main():
+    # Command line argument parsing
+    parser = argparse.ArgumentParser(description='A script that scrapes https://nyxcrossword.com/ for the crossword clues and answers in the specified date range')
+    parser.add_argument('-s', "--start_date",
+        help="The start date - format YYYY-MM-DD",
+        required=True,
+        type=datetime.date.fromisoformat)
+    parser.add_argument('-e', "--end_date",
+        help="The end date - format YYYY-MM-DD (inclusive)",
+        required=True,
+        type=datetime.date.fromisoformat)
+    args = parser.parse_args()
 
-# Read CSV file, get author names and counts.
-df = pd.read_csv(csv_path, header=None,  usecols=[0,1], names=['answer', 'frequency'], nrows=10)
+    start_date = args.start_date.strftime("%Y-%m-%d")
+    end_date = args.end_date.strftime("%Y-%m-%d")
 
-ax = df.plot.bar(x='answer', y='frequency', rot=0)
-ax.plot()
-plt.show()
+    csv_frequency_file = "crossword-clues-frequency-from-" + start_date + "-to-" + end_date + ".csv"
+    directory = "data"
+    my_path = os.path.abspath(os.path.dirname(__file__))
+    data_path = os.path.join(my_path, directory)
+    csv_frequency_file_path = os.path.join(data_path, csv_frequency_file)
+
+    df = pd.read_csv(csv_path, header=None,  usecols=[0,1], names=['answer', 'frequency'], nrows=10)
+    ax = df.plot.bar(x='answer', y='frequency', rot=0)
+    ax.plot()
+    plt.show()
+
+main()
+
