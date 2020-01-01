@@ -1,6 +1,6 @@
 # Crossword
 
-This is a python script that scrapes [this site](https://nyxcrossword.com/) for NYT crossword answers in a given date range.
+This is a python script that scrapes [NYXCrosswords.com](https://nyxcrossword.com/) for NYT crossword answers in a given date range.
 
 ## Setup
 
@@ -11,10 +11,10 @@ This is a python script that scrapes [this site](https://nyxcrossword.com/) for 
 
 3. Install requirements.txt: `pip3 install -r requirements.txt`
 
-4. Run the scrape.py script: `python3 scraper.py -s 2019-10-01 -e 2019-10-31 -l october.log`
+4. Run the scraper.py script: `python3 scraper.py -s 2019-10-01 -e 2019-10-31 -l october.log`
     - Note: you can run the script with the same start and end date it will scrape the clues for that day: 
-        - Give execute permissions: `chmod 755 run-day.sh`
-        - Run script: `./run-day.sh 2019-01-01`   
+        - Give execute permissions: `chmod 755 scrape-day.sh`
+        - Run script: `./scrape-day.sh 2019-01-01`   
     - Also, you can change the logging level to logging.WARNING, logging.INFO, logging.DEBUG, or logging.ERROR
     - Must run with python 3.7 or later or else argument will not parse correctly as described [here](https://stackoverflow.com/questions/25470844/specify-format-for-input-arguments-argparse-python/25470943)
 
