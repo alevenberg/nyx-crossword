@@ -14,10 +14,11 @@ def generate_dates(start_date, end_date):
     """Return a list of dates"""
     return pd.date_range(start=start_date, end=end_date)
 
-def store_clue(clue_dict, item):
+def store_clue(clue_dict, item, logger):
     """Stores an item into a dictionary"""
     key = item[0]
     answer = item[1]
+    logger.debug("Storing clue '{}' with answer'{}'".format(key, answer))
     clue_dict[key] = answer
 
 def get_clues(url, logger):
@@ -58,19 +59,19 @@ def get_clues(url, logger):
             # For case, #. Clue [2019-02-06]
             item = item.lstrip(". ") # Remove white space from front
             item = item.split(":")
-            store_clue(clues, [x.strip() for x in item])
+            store_clue(clues, [x.strip() for x in item], logger)
         elif (":" in  item):
             # Edge case in [2019-07-11], # Clue:Answer
             item = item.split(":")
-            store_clue(clues, [x.strip() for x in item])
+            store_clue(clues, [x.strip() for x in item], logger)
         elif (item.find("…") == 0):
             item = item.lstrip("…")
             if (item.find("..") != -1):
                 item = item.split("..")
-                store_clue(clues, item)
+                store_clue(clues, item, logger)
             elif (item.find("…") != 0):
                 item = item.split("…")
-                store_clue(clues, item)
+                store_clue(clues, item, logger)
         else: 
             if (item != "Down"):
                 logger.error("Unable to parse item '{}' from '{}'".format(item, url))
