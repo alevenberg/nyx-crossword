@@ -1,2 +1,2 @@
-rm -rf data
-rm -r *.log
+rm -rf `pwd`/data
+rm -r `pwd`/*.log

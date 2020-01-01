@@ -18,4 +18,6 @@ This is a python script that scrapes [this site](https://nyxcrossword.com/) for 
 
 6. When finished running the script
     - You can deactivate your virtual environment: `deactivate`
-    - You can also delete the log files and data directory: `./clean.sh`
+    - You can also delete the log files and data directory by running a cleaning script
+        - Give execute permissions: `chmod 755 clean.sh`
+        - Run script: `./clean.sh`
