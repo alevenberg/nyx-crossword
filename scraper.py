@@ -80,7 +80,7 @@ def get_clues(url, logger):
 
 def write_to_csv(crossword_dict, date, file_name, logger):
     """Writes to a csv file for a given date"""
-    logger.info("Writing to csv file '{}'".format(file_name))
+    logger.info("Writing to csv file '{}' for {}".format(file_name, date))
 
     # Make directory in file it is run in
     directory = "data"
@@ -123,7 +123,7 @@ def main():
     # Parse logging file
     my_path = os.path.abspath(os.path.dirname(__file__))
     log_file = os.path.join(my_path, str(args.log_file.name))
-    logging.basicConfig(level=logging.DEBUG, filename=log_file, filemode='w', format='%(name)s - %(levelname)s - %(message)s')
+    logging.basicConfig(level=logging.INFO, filename=log_file, filemode='w', format='%(name)s - %(levelname)s - %(message)s')
     logger = logging.getLogger(__name__)
 
     # Validate dates
