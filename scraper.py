@@ -38,14 +38,29 @@ def get_clues(url, logger):
     soup = BeautifulSoup(page.text, "lxml")
     clue_list_p = soup.find("div", {"id":"clue_list"})
 
-    if (clue_list_p is None):
-        logger.error("Unable to parse page - no clue list found '{}'".format(url))
-        return {}
-
     clue_list = []
-    for item in clue_list_p.find_all("p"):
-        text = item.get_text()
-        clue_list.extend(text.split("\n"))
+    if (clue_list_p is None):
+        # For older entries without a cluelist
+        across = soup.find('b', text="Across")
+        down = soup.find('b', text="Across")
+        if (across is None or down is None):
+            logger.error("Unable to parse page - no clue list found '{}'".format(url))
+            return {}
+
+        across_clues = across.find_parent('i')
+        down_clues = down.find_parent('i')
+
+        for linebreak in across_clues.find_all('br'):
+            linebreak.extract()
+        for linebreak in down_clues.find_all('br'):
+            linebreak.extract()
+
+        clue_list.extend(across_clues.text.split("\n"))
+        clue_list.extend(down_clues.text.split("\n"))
+    else:
+        for item in clue_list_p.find_all("p"):
+            text = item.get_text()
+            clue_list.extend(text.split("\n"))
 
     clue_list = list(filter(lambda x: x != "",clue_list)) # Remove empty string entry
 
@@ -136,7 +151,7 @@ def main():
     # Parse logging file
     my_path = os.path.abspath(os.path.dirname(__file__))
     log_file = os.path.join(my_path, str(args.log_file.name))
-    logging.basicConfig(level=logging.INFO, filename=log_file, filemode='w', format='%(name)s - %(levelname)s - %(message)s')
+    logging.basicConfig(level=os.environ.get("LOGLEVEL", "INFO"), filename=log_file, filemode='w', format='%(name)s - %(levelname)s - %(message)s')
     logger = logging.getLogger(__name__)
 
     # Validate dates

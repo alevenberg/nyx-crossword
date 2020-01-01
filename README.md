@@ -15,7 +15,7 @@ This is a python script that scrapes [NYXCrosswords.com](https://nyxcrossword.co
     - Note: you can run the script with the same start and end date it will scrape the clues for that day: 
         - Give execute permissions: `chmod 755 scrape-day.sh`
         - Run script: `./scrape-day.sh 2019-01-01`   
-    - Also, you can change the logging level to logging.WARNING, logging.INFO, logging.DEBUG, or logging.ERROR
+    - Also, you can change the logging level to logging.WARNING, logging.INFO, logging.DEBUG, or logging.ERROR by setting the environment variable (by default is at INFO): `export LOGLEVEL=DEBUG`
     - *Must run with python 3.7 or later*, if not the command line argument will not parse correctly as described [here](https://stackoverflow.com/questions/25470844/specify-format-for-input-arguments-argparse-python/25470943)
 
 5. The csv file will be found in `./data/crossword-clues-from-2019-10-01-to-2019-10-31.csv`
