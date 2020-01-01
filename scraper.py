@@ -8,22 +8,11 @@ import csv
 import argparse
 import datetime
 
-# Command line argument parsing
-parser = argparse.ArgumentParser(description='A script that scrapes https://nyxcrossword.com/ for the crossword clues and answers in the specified date range')
-parser.add_argument('-s', "--start_date",
-    help="The start date - format YYYY-MM-DD",
-    required=True,
-    type=datetime.date.fromisoformat)
-parser.add_argument('-e', "--end_date",
-    help="The end date - format YYYY-MM-DD (inclusive)",
-    required=True,
-    type=datetime.date.fromisoformat)
-args = parser.parse_args()
 
-print(args.start_date)
-print(args.end_date)
 
-def generate_dates(start_date, end_date):
+
+
+# def generate_dates(start_date, end_date):
 
 nyx_url = "https://nyxcrossword.com/2019/11/01"
 
@@ -53,6 +42,19 @@ crossword = {}
 
 
 def main():
+    # Command line argument parsing
+    parser = argparse.ArgumentParser(description='A script that scrapes https://nyxcrossword.com/ for the crossword clues and answers in the specified date range')
+    parser.add_argument('-s', "--start_date",
+        help="The start date - format YYYY-MM-DD",
+        required=True,
+        type=datetime.date.fromisoformat)
+    parser.add_argument('-e', "--end_date",
+        help="The end date - format YYYY-MM-DD (inclusive)",
+        required=True,
+        type=datetime.date.fromisoformat)
+    args = parser.parse_args()
+    print(args.start_date)
+    print(args.end_date)
     print("running!")
 main()
 # Make directory in file it is run in
