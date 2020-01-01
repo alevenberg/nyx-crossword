@@ -83,7 +83,12 @@ def write_to_csv(crossword_dict, date, file_name, logger):
         os.makedirs(data_path)
 
     csv_path = os.path.join(data_path, file_name)
-    with open(csv_path, 'w') as csvfile:
+
+    mode = "w"
+    if (os.path.exists(csv_path)):
+        mode = "a"
+
+    with open(csv_path, mode) as csvfile:
         writer = csv.writer(csvfile, delimiter=',',
                             escapechar=' ', quoting=csv.QUOTE_MINIMAL)
         for clue, answer in crossword_dict.items():
