@@ -53,9 +53,15 @@ def get_clues(url, logger):
         item = item.lstrip('0123456789') # Remove number from front
         item = item.lstrip() # Remove white space from front
         # Split clue and answer if separated with colon
-        if (" : " in  item):
-            item = item.split(" : ")
-            store_clue(clues, item)
+        if (":" in  item):
+            # Edge case in [2019-07-11], # Clue:Answer
+            item = item.split(":")
+            store_clue(clues, [x.strip() for x in item])
+        elif (item.find(".") == 0):
+            # For case, #. Clue [2019-02-06]
+            item = item.lstrip(". ") # Remove white space from front
+            item = item.split(":")
+            store_clue(clues, [x.strip() for x in item])
         elif (item.find("…") == 0):
             item = item.lstrip("…")
             if (item.find("..") != -1):

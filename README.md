@@ -16,4 +16,6 @@ This is a python script that scrapes [this site](https://nyxcrossword.com/) for 
 
 5. The csv file will be found in `./data/crossword-clues-from-2019-10-01-to-2019-10-31.csv`
 
-6. When finished running script, you can deactivate your virtual environment: `deactivate`
+6. When finished running the script
+    - You can deactivate your virtual environment: `deactivate`
+    - You can also delete the log files and data directory: `./clean.sh`
