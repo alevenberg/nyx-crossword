@@ -14,6 +14,12 @@ def generate_dates(start_date, end_date):
     """Return a list of dates"""
     return pd.date_range(start=start_date, end=end_date)
 
+def store_clue(clue_dict, item):
+    """Stores an item into a dictionary"""
+    key = item[0]
+    answer = item[1]
+    clue_dict[key] = answer
+
 def get_clues(url):
     """Return a dictionary containing the clues and answers of the crossword from the given page"""
     page = requests.get(url)
@@ -30,14 +36,34 @@ def get_clues(url):
     clues = {}
     for item in clue_list:
         item = item.lstrip('0123456789 ') # Remove number from front
-        item = re.split(' : ', item) # Split clue and answer
-        key = item[0]
-        answer = item[1]
-        clues[key] = answer
+        # Split clue and answer if separated with colon
+        if (" : " in  item):
+            item = item.split(" : ")
+            store_clue(clues, item)
+        elif (item.find("…") == 0):
+            item = item.lstrip("…")
+            if (item.find("..") != -1):
+                item = item.split("..")
+                store_clue(clues, item)
+            elif (item.find("…") != 0):
+                item = item.split("…")
+                store_clue(clues, item)
+        else: 
+            print(item)
+    
     return clues
-
-crossword = {}
-
+             # print(item)
+        # item = re.split(' : ', item) 
+        # if (len(item) == 2):
+            # store_clue(clues, item)
+        # else:
+        #     print(item)
+            # item = item[0].lstrip('..') # Remove .. from front
+            # item = re.split('...', item) # Split clue and answer if separated with colon
+            # if (len(item) == 2):
+            #     store_clue(clues, item)
+            # print(url)
+            # print(item)
 
 def main():
     # Command line argument parsing
@@ -57,15 +83,24 @@ def main():
 
     base_url = "https://nyxcrossword.com"
     urls = []
+    crossword = {}
+    crosswords = {}
+    print(date_range)
     for single_date in date_range:
+        # print(single_date.strftime("%Y-%m-%d"))
         year = single_date.strftime("%Y")
         month = single_date.strftime("%m")
         day = single_date.strftime("%d")
         url_date_items = [year, month, day]
         
         url = urllib.parse.urljoin(base_url, ("/".join(url_date_items)))
-        urls.append(url)
-    print(urls)
+
+        clues_dict = get_clues(url)
+        crosswords[single_date.strftime("%Y-%m-%d")] = clues_dict
+
+    print(crosswords)
+    #     urls.append(url)
+    # print(urls)
 
 main()
 # Make directory in file it is run in
