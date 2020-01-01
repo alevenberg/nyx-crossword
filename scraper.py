@@ -10,6 +10,7 @@ import datetime
 import pandas as pd
 import urllib.parse
 import sys 
+import logging
 
 def generate_dates(start_date, end_date):
     """Return a list of dates"""
@@ -21,11 +22,20 @@ def store_clue(clue_dict, item):
     answer = item[1]
     clue_dict[key] = answer
 
-def get_clues(url):
+def get_clues(url, logger):
     """Return a dictionary containing the clues and answers of the crossword from the given page"""
-    page = requests.get(url)
+    logger.info("Scraping clues from '{}'".format(url))
+    try: 
+        page = requests.get(url)
+    except requests.exceptions.ConnectionError: 
+        logger.error("Unable to connect to url '{}'".format(url))
+
     soup = BeautifulSoup(page.text, "lxml")
     clue_list_p = soup.find("div", {"id":"clue_list"})
+
+    if (clue_list_p is None):
+        logger.error("Unable to parse url '{}'".format(url))
+        return {}
 
     clue_list = []
     for item in clue_list_p.find_all("p"):
@@ -36,7 +46,8 @@ def get_clues(url):
 
     clues = {}
     for item in clue_list:
-        item = item.lstrip('0123456789 ') # Remove number from front
+        item = item.lstrip('0123456789') # Remove number from front
+        item = item.lstrip() # Remove white space from front
         # Split clue and answer if separated with colon
         if (" : " in  item):
             item = item.split(" : ")
@@ -50,12 +61,15 @@ def get_clues(url):
                 item = item.split("…")
                 store_clue(clues, item)
         else: 
-            print("Can't parse item: ", item)
+            if (item != "Down"):
+                logger.error("Unable to parse item '{}' from '{}'".format(item, url))
     
     return clues
 
-def write_to_csv(crossword_dict, file_name):
+def write_to_csv(crossword_dict, file_name, logger):
     """Writes to a csv file in directory called data"""
+    logger.info("Writing to csv file '{}'".format(file_name))
+
     # Make directory in file it is run in
     directory = "data"
     my_path = os.path.abspath(os.path.dirname(__file__))
@@ -83,18 +97,30 @@ def main():
         help="The end date - format YYYY-MM-DD (inclusive)",
         required=True,
         type=datetime.date.fromisoformat)
+    parser.add_argument('-l', "--log_file",
+        help="Logging file - default is app.log",
+        required=False,
+        default="crossword.log",
+        type=argparse.FileType('w'))
     args = parser.parse_args()
 
+    # Parse logging file
+    my_path = os.path.abspath(os.path.dirname(__file__))
+    log_file = os.path.join(my_path, str(args.log_file.name))
+    logging.basicConfig(level=logging.ERROR, filename=log_file, filemode='w', format='%(name)s - %(levelname)s - %(message)s')
+    logger = logging.getLogger(__name__)
+
+    # Validate dates
     start_date = args.start_date.strftime("%Y-%m-%d")
     end_date = args.end_date.strftime("%Y-%m-%d")
 
     if (end_date < start_date):
-        print("End date must be after or the same as the start date")
+        logger.warning("End date must be after or the same as the start date")
         sys.exit(0)
 
     todays_date = date.today().strftime("%Y-%m-%d")
     if (end_date > todays_date):
-        print("End date must be before today")
+        logger.warning("End date must be before today")
         sys.exit(0)
 
     # Generate dates
@@ -112,16 +138,15 @@ def main():
         
         url = urllib.parse.urljoin(base_url, ("/".join(url_date_items)))
 
-        clues_dict = get_clues(url)
+        clues_dict = get_clues(url, logger)
         crosswords[single_date.strftime("%Y-%m-%d")] = clues_dict
     
     if (args.start_date != args.end_date):
         file_name = "crossword-clues-from-" + str(args.start_date) + "-to-" + str(args.end_date) + ".csv"
     else: 
         file_name = "crossword-clues-from-" + str(args.start_date) + ".csv"
-    print(file_name)
 
     # Write to csv
-    write_to_csv(crosswords, file_name)
+    write_to_csv(crosswords, file_name, logger)
 
 main()
