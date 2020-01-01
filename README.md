@@ -1,17 +1,9 @@
 # NYX-Crossword
 
-This is a python script that scrapes [NYXCrosswords.com](https://nyxcrossword.com/) for NYT crossword answers in a given date range. After scraping the data, it collects the most frequent answers and graphs them. 
+This is a python script that scrapes [NYXCrosswords.com](https://nyxcrossword.com/) for NYT crossword answers in a given date range. After scraping the data, it collects the most frequent answers and graphs them.
 
-## Graphs Generated from 2011-2019
+## Graphs Generated for 2019
 
-![2011 Frequency](./graph/most-frequent-nyt-crossword-answers-from-2011-01-01-to-2011-12-31.png)
-![2012 Frequency](./graph/most-frequent-nyt-crossword-answers-from-2012-01-01-to-2012-12-31.png)
-![2013 Frequency](./graph/most-frequent-nyt-crossword-answers-from-2013-01-01-to-2013-12-31.png)
-![2014 Frequency](./graph/most-frequent-nyt-crossword-answers-from-2014-01-01-to-2014-12-31.png)
-![2015 Frequency](./graph/most-frequent-nyt-crossword-answers-from-2015-01-01-to-2015-12-31.png)
-![2016 Frequency](./graph/most-frequent-nyt-crossword-answers-from-2016-01-01-to-2016-12-31.png)
-![2017 Frequency](./graph/most-frequent-nyt-crossword-answers-from-2017-01-01-to-2017-12-31.png)
-![2018 Frequency](./graph/most-frequent-nyt-crossword-answers-from-2018-01-01-to-2018-12-31.png)
 ![2019 Frequency](./graph/most-frequent-nyt-crossword-answers-from-2019-01-01-to-2019-12-31.png)
 
 ## Setup
@@ -28,7 +20,7 @@ This is a python script that scrapes [NYXCrosswords.com](https://nyxcrossword.co
     - You can also delete the log files and data directory by running a cleaning script
         - Give execute permissions: `chmod 755 clean.sh`
         - Run script: `./clean.sh` to delete the data directory and any log files generated
-  
+
 Note: You can change the logging level to logging.WARNING, logging.INFO, logging.DEBUG, or logging.ERROR by setting the environment variable (by default is at INFO): `export LOGLEVEL=DEBUG`
 
 ## Web Scraping and Analysis
