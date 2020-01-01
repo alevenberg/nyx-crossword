@@ -18,7 +18,7 @@ def store_clue(clue_dict, item, logger):
     """Stores an item into a dictionary"""
     key = item[0]
     answer = item[1]
-    answer = ''.join(c for c in answer if c.isalpha()) # Remove non alpha characters
+    answer = ''.join(c for c in answer if c.isalpha() and c.isupper()) # Remove non alpha characters
     logger.debug("Storing clue '{}' with answer '{}'".format(key, answer))
     clue_dict[key] = answer
 
