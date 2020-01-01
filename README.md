@@ -6,7 +6,7 @@ This is a python script that scrapes [NYXCrosswords.com](https://nyxcrossword.co
 
 ![2019 Frequency](./graph/most-frequent-nyt-crossword-answers-from-2019-01-01-to-2019-12-31.png)
 
-The graphs from 2011 to 2019 can be found [here](./graph.md)
+The graphs from 2011 to 2019 can be found [here](./graph.md).
 
 ## Setup
 
