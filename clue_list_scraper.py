@@ -6,6 +6,7 @@ import datetime
 import logging
 import os
 import pandas as pd
+import re 
 import requests
 import sys 
 import urllib.parse
@@ -18,6 +19,9 @@ def store_clue(clue_dict, item, logger):
     """Stores an item into a dictionary"""
     key = item[0]
     answer = item[1]
+    # Edge case 2012-01-01 where the clue explanation is in ()
+    if ("(" in answer and ")" in answer):
+        answer = (re.sub(r" ?\([^)]+\)", "", answer))
     answer = ''.join(c for c in answer if c.isalpha() and c.isupper()) # Remove non alpha characters
     logger.debug("Storing clue '{}' with answer '{}'".format(key, answer))
     clue_dict[key] = answer
@@ -81,7 +85,7 @@ def get_clues(url, logger):
             text = item.get_text()
             clue_list.extend(text.split("\n"))
 
-    clue_list = list(filter(lambda x: x != "" and x != "Across" and x != "Down",clue_list)) # Remove empty string entry
+    clue_list = list(filter(lambda x: x != "" and x != "Across" and x != "Down" and x != "Return to top of page",clue_list)) # Remove empty string entry
 
     clues = {}
     for item in clue_list:
