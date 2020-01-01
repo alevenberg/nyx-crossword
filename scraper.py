@@ -121,7 +121,7 @@ def main():
     # Parse logging file
     my_path = os.path.abspath(os.path.dirname(__file__))
     log_file = os.path.join(my_path, str(args.log_file.name))
-    logging.basicConfig(level=logging.ERROR, filename=log_file, filemode='w', format='%(name)s - %(levelname)s - %(message)s')
+    logging.basicConfig(level=logging.INFO, filename=log_file, filemode='w', format='%(name)s - %(levelname)s - %(message)s')
     logger = logging.getLogger(__name__)
 
     # Validate dates
@@ -148,7 +148,6 @@ def main():
         file_name = "crossword-clues-from-" + str(args.start_date) + ".csv"
 
     for single_date in date_range:
-        # print(single_date.strftime("%Y-%m-%d"))
         year = single_date.strftime("%Y")
         month = single_date.strftime("%m")
         day = single_date.strftime("%d")
