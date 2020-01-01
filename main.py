@@ -5,6 +5,21 @@ import csv
 import os
 import os.path
 import csv 
+import argparse
+import datetime
+
+parser = argparse.ArgumentParser()
+parser.add_argument('-s', "--startdate",
+    help="The Start Date - format YYYY-MM-DD",
+    required=True,
+    type=datetime.date.fromisoformat)
+parser.add_argument('-e', "--enddate",
+    help="The End Date format YYYY-MM-DD (Inclusive)",
+    required=True,
+    type=datetime.date.fromisoformat)
+# args = parser.parse_args(['2012-01-12'])  # For testing.  Pass no arguments in production
+# print args.date
+
 
 nyx_url = "https://nyxcrossword.com/2019/11/01"
 
