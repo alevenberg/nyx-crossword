@@ -49,7 +49,7 @@ def get_clues(url, logger):
         across = soup.find_all('b', text="Across")
         down = soup.find_all('b', text="Down")
 
-        if (len(across) != 0 or len(down) != 0): 
+        if (len(across) != 0 and len(down) != 0): 
             across = across[-1]
             down = down[-1]
         else:
