@@ -38,7 +38,7 @@ def get_clues(url, logger):
     clue_list_p = soup.find("div", {"id":"clue_list"})
 
     if (clue_list_p is None):
-        logger.error("Unable to parse url '{}'".format(url))
+        logger.error("Unable to parse page - no clue list found '{}'".format(url))
         return {}
 
     clue_list = []
