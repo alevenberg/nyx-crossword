@@ -13,6 +13,7 @@ This is a python script that scrapes [this site](https://nyxcrossword.com/) for 
 
 4. Run the scrape.py script: `python3 scrape.py -s 2019-10-01 -e 2019-10-31 -l october.log`
     - Note: you can run the script with the same start and end date it will scrape the clues for that day
+    - Also, you can change the logging level to logging.WARNING, logging.INFO, or logging.ERROR
 
 5. The csv file will be found in `./data/crossword-clues-from-2019-10-01-to-2019-10-31.csv`
 
