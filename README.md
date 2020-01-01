@@ -12,7 +12,7 @@ This is a python script that scrapes [NYXCrosswords.com](https://nyxcrossword.co
 ![2016 Frequency](./graph/most-frequent-nyt-crossword-answers-from-2016-01-01-to-2016-12-31.png)
 ![2017 Frequency](./graph/most-frequent-nyt-crossword-answers-from-2017-01-01-to-2017-12-31.png)
 ![2018 Frequency](./graph/most-frequent-nyt-crossword-answers-from-2018-01-01-to-2018-12-31.png)
-![2019 Frequency](./graph/most-frequent-nyt-crossword-answers-from-2019-01-01-to-2010-12-31.png)
+![2019 Frequency](./graph/most-frequent-nyt-crossword-answers-from-2019-01-01-to-2019-12-31.png)
 
 ## Setup
 
