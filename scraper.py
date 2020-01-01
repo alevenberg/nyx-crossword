@@ -136,7 +136,7 @@ def main():
     # Parse logging file
     my_path = os.path.abspath(os.path.dirname(__file__))
     log_file = os.path.join(my_path, str(args.log_file.name))
-    logging.basicConfig(level=logging.DEBUG, filename=log_file, filemode='w', format='%(name)s - %(levelname)s - %(message)s')
+    logging.basicConfig(level=logging.INFO, filename=log_file, filemode='w', format='%(name)s - %(levelname)s - %(message)s')
     logger = logging.getLogger(__name__)
 
     # Validate dates
