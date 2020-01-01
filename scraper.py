@@ -7,17 +7,15 @@ import os.path
 import csv 
 import argparse
 import datetime
+import pandas as pd
+import urllib.parse
 
-
-
-
-
-# def generate_dates(start_date, end_date):
-
-nyx_url = "https://nyxcrossword.com/2019/11/01"
+def generate_dates(start_date, end_date):
+    """Return a list of dates"""
+    return pd.date_range(start=start_date, end=end_date)
 
 def get_clues(url):
-    """Return a dictionary containing the clues and answers of the crossword that day"""
+    """Return a dictionary containing the clues and answers of the crossword from the given page"""
     page = requests.get(url)
     soup = BeautifulSoup(page.text, "lxml")
     clue_list_p = soup.find("div", {"id":"clue_list"})
@@ -53,9 +51,22 @@ def main():
         required=True,
         type=datetime.date.fromisoformat)
     args = parser.parse_args()
-    print(args.start_date)
-    print(args.end_date)
-    print("running!")
+
+    # Generate dates
+    date_range = generate_dates(args.start_date, args.end_date)
+
+    base_url = "https://nyxcrossword.com"
+    urls = []
+    for single_date in date_range:
+        year = single_date.strftime("%Y")
+        month = single_date.strftime("%m")
+        day = single_date.strftime("%d")
+        url_date_items = [year, month, day]
+        
+        url = urllib.parse.urljoin(base_url, ("/".join(url_date_items)))
+        urls.append(url)
+    print(urls)
+
 main()
 # Make directory in file it is run in
 # directory = "./data/"
