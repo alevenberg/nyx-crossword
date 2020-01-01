@@ -28,6 +28,7 @@ print(args.end_date)
 nyx_url = "https://nyxcrossword.com/2019/11/01"
 
 def get_clues(url):
+    """Return a dictionary containing the clues and answers of the crossword that day"""
     page = requests.get(url)
     soup = BeautifulSoup(page.text, "lxml")
     clue_list_p = soup.find("div", {"id":"clue_list"})
