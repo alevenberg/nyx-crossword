@@ -23,7 +23,7 @@ args = parser.parse_args()
 print(args.start_date)
 print(args.end_date)
 
-
+def generate_dates(start_date, end_date):
 
 nyx_url = "https://nyxcrossword.com/2019/11/01"
 
@@ -52,7 +52,9 @@ def get_clues(url):
 crossword = {}
 
 
-
+def main():
+    print("running!")
+main()
 # Make directory in file it is run in
 # directory = "./data/"
 # my_path = os.path.abspath(os.path.dirname(__file__))
