@@ -5,6 +5,7 @@ import csv
 import os
 import csv 
 import argparse
+from datetime import date
 import datetime
 import pandas as pd
 import urllib.parse
@@ -65,7 +66,8 @@ def write_to_csv(crossword_dict, file_name):
 
     csv_path = os.path.join(data_path, file_name)
     with open(csv_path, 'w') as csvfile:
-        writer = csv.writer(csvfile)
+        writer = csv.writer(csvfile, delimiter=',',
+                            escapechar=' ', quoting=csv.QUOTE_MINIMAL)
         for key, value in crossword_dict.items():
             for clue, answer in value.items():
                 writer.writerow([key, clue, answer])
@@ -88,6 +90,11 @@ def main():
 
     if (end_date < start_date):
         print("End date must be after or the same as the start date")
+        sys.exit(0)
+
+    todays_date = date.today().strftime("%Y-%m-%d")
+    if (end_date > todays_date):
+        print("End date must be before today")
         sys.exit(0)
 
     # Generate dates
