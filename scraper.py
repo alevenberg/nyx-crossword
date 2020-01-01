@@ -54,6 +54,7 @@ def get_clues(url):
     return clues
 
 def write_to_csv(crossword_dict, file_name):
+    """Writes to a csv file in directory called data"""
     # Make directory in file it is run in
     directory = "data"
     my_path = os.path.abspath(os.path.dirname(__file__))
