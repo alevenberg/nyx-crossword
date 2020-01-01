@@ -37,6 +37,6 @@ def main():
     csv_frequency_file = "crossword-clues-frequency-from-" + start_date + "-to-" + end_date + ".csv"
     csv_frequency_file_path = os.path.join(data_path, csv_frequency_file)
     value_counts = df['answer'].value_counts(ascending=False)
-    value_counts.to_csv(csv_frequency_file_path)
+    value_counts.to_csv(csv_frequency_file_path, header=False)
 
 main()
