@@ -18,7 +18,7 @@ def store_clue(clue_dict, item, logger):
     """Stores an item into a dictionary"""
     key = item[0]
     answer = item[1]
-    logger.debug("Storing clue '{}' with answer'{}'".format(key, answer))
+    logger.debug("Storing clue '{}' with answer '{}'".format(key, answer))
     clue_dict[key] = answer
 
 def get_clues(url, logger):
@@ -57,12 +57,25 @@ def get_clues(url, logger):
         # Split clue and answer if separated with colon
         if (item.find(".") == 0):
             # For case, #. Clue [2019-02-06]
+            # Edge case in [2019-01-02], #. Clue: Clue cont : Answer
             item = item.lstrip(". ") # Remove white space from front
-            item = item.split(":")
+            if (item.count(":") != 1):
+                item = item.rpartition(":")
+                clue = item[0]
+                answer = item[2]
+                item = [clue, answer]
+            else:
+                item = item.split(":")
             store_clue(clues, [x.strip() for x in item], logger)
         elif (":" in  item):
             # Edge case in [2019-07-11], # Clue:Answer
-            item = item.split(":")
+            if (item.count(":") != 1):
+                item = item.rpartition(":")
+                clue = item[0]
+                answer = item[2]
+                item = [clue, answer]
+            else:
+                item = item.split(":")
             store_clue(clues, [x.strip() for x in item], logger)
         elif (item.find("…") == 0):
             item = item.lstrip("…")
@@ -123,7 +136,7 @@ def main():
     # Parse logging file
     my_path = os.path.abspath(os.path.dirname(__file__))
     log_file = os.path.join(my_path, str(args.log_file.name))
-    logging.basicConfig(level=logging.INFO, filename=log_file, filemode='w', format='%(name)s - %(levelname)s - %(message)s')
+    logging.basicConfig(level=logging.DEBUG, filename=log_file, filemode='w', format='%(name)s - %(levelname)s - %(message)s')
     logger = logging.getLogger(__name__)
 
     # Validate dates
