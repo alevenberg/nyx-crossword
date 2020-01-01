@@ -1,4 +1,4 @@
-# Crossword
+# NYX-Crossword
 
 This is a python script that scrapes [NYXCrosswords.com](https://nyxcrossword.com/) for NYT crossword answers in a given date range.
 
