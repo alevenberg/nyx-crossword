@@ -13,7 +13,8 @@ The graphs from 2011 to 2019 can be found [here](./graph.md).
 1. Setup your virtual environment
     - For mac OS: `python3.7 -m venv env`
 
-2. Activate your virtual environment: `source ./env/bin/activate`
+2. Activate your virtual environment: 
+    - For mac OS: `source ./env/bin/activate`
 
 3. Install requirements.txt: `pip3 install -r requirements.txt`
 
